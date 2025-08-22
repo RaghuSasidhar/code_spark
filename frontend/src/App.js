@@ -569,21 +569,29 @@ const Dashboard = () => {
 const App = () => {
   const auth = useAuth();
   const [currentView, setCurrentView] = useState('login');
+  const [authView, setAuthView] = useState('login'); // For login/register toggle
+
+  // Enhanced context value
+  const contextValue = {
+    ...auth,
+    currentView,
+    setCurrentView
+  };
 
   return (
-    <AppContext.Provider value={auth}>
+    <AppContext.Provider value={contextValue}>
       <div className="min-h-screen bg-gray-50">
         <BrowserRouter>
           <Header />
           
           {!auth.isAuthenticated ? (
             <div className="container mx-auto px-4 py-8">
-              {currentView === 'login' ? (
+              {authView === 'login' ? (
                 <div>
                   <LoginForm />
                   <div className="text-center mt-4">
                     <button
-                      onClick={() => setCurrentView('register')}
+                      onClick={() => setAuthView('register')}
                       className="text-blue-600 hover:text-blue-800 font-medium"
                     >
                       Don't have an account? Sign up here
@@ -595,7 +603,7 @@ const App = () => {
                   <RegisterForm />
                   <div className="text-center mt-4">
                     <button
-                      onClick={() => setCurrentView('login')}
+                      onClick={() => setAuthView('login')}
                       className="text-blue-600 hover:text-blue-800 font-medium"
                     >
                       Already have an account? Login here
@@ -605,11 +613,50 @@ const App = () => {
               )}
             </div>
           ) : (
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="*" element={<Navigate to="/dashboard" />} />
-            </Routes>
+            <div className="container mx-auto px-4 py-8">
+              {currentView === 'dashboard' && <Dashboard />}
+              {currentView === 'requests' && <RequestsList />}
+              {currentView === 'offers' && (
+                <div className="max-w-6xl mx-auto">
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Available Offers</h2>
+                    <p className="text-gray-600">Browse help offers from community members</p>
+                  </div>
+                  {/* TODO: Implement OffersList component */}
+                  <div className="bg-white rounded-lg shadow-md p-8 text-center">
+                    <div className="text-6xl mb-4">💝</div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Offers Feature Coming Soon</h3>
+                    <p className="text-gray-600 mb-4">
+                      The offers listing feature will be implemented in the next phase.
+                    </p>
+                    <button 
+                      onClick={() => setCurrentView('create-offer')}
+                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+                    >
+                      Create an Offer Instead
+                    </button>
+                  </div>
+                </div>
+              )}
+              {currentView === 'create-request' && (
+                <RequestForm 
+                  onRequestCreated={(request) => {
+                    console.log('Request created:', request);
+                    setCurrentView('requests');
+                  }}
+                  onCancel={() => setCurrentView('dashboard')}
+                />
+              )}
+              {currentView === 'create-offer' && (
+                <OfferForm 
+                  onOfferCreated={(offer) => {
+                    console.log('Offer created:', offer);
+                    setCurrentView('dashboard');
+                  }}
+                  onCancel={() => setCurrentView('dashboard')}
+                />
+              )}
+            </div>
           )}
         </BrowserRouter>
       </div>
