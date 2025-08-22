@@ -568,8 +568,17 @@ const Dashboard = () => {
 // Main App Component
 const App = () => {
   const auth = useAuth();
-  const [currentView, setCurrentView] = useState('login');
+  const [currentView, setCurrentView] = useState(auth.isAuthenticated ? 'dashboard' : 'login');
   const [authView, setAuthView] = useState('login'); // For login/register toggle
+
+  // Set initial view when authentication changes
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      setCurrentView('dashboard');
+    } else {
+      setCurrentView('login');
+    }
+  }, [auth.isAuthenticated]);
 
   // Enhanced context value
   const contextValue = {
