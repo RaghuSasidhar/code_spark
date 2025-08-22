@@ -88,23 +88,52 @@ const useAuth = () => {
 
 // Header Component
 const Header = () => {
-  const { user, logout, isAuthenticated } = useContext(AppContext);
+  const { user, logout, isAuthenticated, currentView, setCurrentView } = useContext(AppContext);
 
   return (
     <header className="bg-blue-600 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <div className="flex items-center">
+          <div 
+            className="flex items-center cursor-pointer"
+            onClick={() => setCurrentView('dashboard')}
+          >
             <h1 className="text-2xl font-bold">🤝 Aid-Connect</h1>
             <span className="ml-2 text-blue-200 text-sm">Community Help Platform</span>
           </div>
           
           {isAuthenticated && (
             <nav className="flex items-center space-x-6">
-              <a href="#dashboard" className="hover:text-blue-200 transition-colors">Dashboard</a>
-              <a href="#requests" className="hover:text-blue-200 transition-colors">Requests</a>
-              <a href="#offers" className="hover:text-blue-200 transition-colors">Offers</a>
-              <a href="#map" className="hover:text-blue-200 transition-colors">Map</a>
+              <button 
+                onClick={() => setCurrentView('dashboard')}
+                className={`hover:text-blue-200 transition-colors ${currentView === 'dashboard' ? 'text-white font-medium' : 'text-blue-200'}`}
+              >
+                Dashboard
+              </button>
+              <button 
+                onClick={() => setCurrentView('requests')}
+                className={`hover:text-blue-200 transition-colors ${currentView === 'requests' ? 'text-white font-medium' : 'text-blue-200'}`}
+              >
+                Requests
+              </button>
+              <button 
+                onClick={() => setCurrentView('offers')}
+                className={`hover:text-blue-200 transition-colors ${currentView === 'offers' ? 'text-white font-medium' : 'text-blue-200'}`}
+              >
+                Offers
+              </button>
+              <button 
+                onClick={() => setCurrentView('create-request')}
+                className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-sm transition-colors"
+              >
+                Request Help
+              </button>
+              <button 
+                onClick={() => setCurrentView('create-offer')}
+                className="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded-md text-sm transition-colors"
+              >
+                Offer Help
+              </button>
               <div className="flex items-center space-x-3">
                 <div className="text-sm">
                   <div className="font-medium">{user?.profile?.name || 'User'}</div>
