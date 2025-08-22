@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 
+// Import components
+import RequestForm from './components/RequestForm';
+import RequestsList from './components/RequestsList';
+import OfferForm from './components/OfferForm';
+
 // Context for global state
 const AppContext = createContext();
 
