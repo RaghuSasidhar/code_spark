@@ -372,7 +372,7 @@ const RegisterForm = () => {
 
 // Dashboard Component
 const Dashboard = () => {
-  const { user } = useContext(AppContext);
+  const { user, setCurrentView } = useContext(AppContext);
   const [requests, setRequests] = useState([]);
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -468,7 +468,10 @@ const Dashboard = () => {
         <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg text-white">
           <h3 className="text-xl font-bold mb-2">Need Help?</h3>
           <p className="mb-4 opacity-90">Connect with helpers in your community</p>
-          <button className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+          <button 
+            onClick={() => setCurrentView('create-request')}
+            className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors"
+          >
             Create Request
           </button>
         </div>
@@ -476,7 +479,10 @@ const Dashboard = () => {
         <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg text-white">
           <h3 className="text-xl font-bold mb-2">Want to Help?</h3>
           <p className="mb-4 opacity-90">Offer your skills and time to others</p>
-          <button className="bg-white text-green-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+          <button 
+            onClick={() => setCurrentView('create-offer')}
+            className="bg-white text-green-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors"
+          >
             Create Offer
           </button>
         </div>
